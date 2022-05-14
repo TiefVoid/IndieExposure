@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IndieExposure">
         <activity
+            android:name=".NewPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyPostsActivity"
             android:exported="false" />
         <activity
