@@ -8,7 +8,14 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.concurrent.atomic.AtomicMarkableReference;
+
 public class MainActivity extends AppCompatActivity {
+    private FirebaseStorage storage;
     private FloatingActionButton fabNewPost;
 
     @Override
@@ -23,5 +30,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
             }
         });
+
+        StorageReference storageRef = storage.getReference();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
     }
 }
