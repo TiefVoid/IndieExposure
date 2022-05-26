@@ -1,6 +1,7 @@
 package com.example.indieexposure;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
@@ -14,9 +15,10 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 public class PostActivity extends AppCompatActivity {
-    private TextView pPos,pDur;
+    private TextView pPos,pDur,tvPost,tvDesc;
     private SeekBar sBar;
-    private ImageView btR, btPl, btPs, btF;
+    private ImageView btR, btPl, btPs, btF, ivPic, ivPostUser;
+    private RecyclerView rvComm;
     MediaPlayer mp;
     Handler handel = new Handler();
     Runnable run;
@@ -33,6 +35,11 @@ public class PostActivity extends AppCompatActivity {
         btPl = findViewById(R.id.bt_play);
         btPs = findViewById(R.id.bt_pause);
         btF = findViewById(R.id.bt_ff);
+        tvPost = findViewById(R.id.tvPost);
+        tvDesc = findViewById(R.id.tvDesc);
+        ivPic = findViewById(R.id.ivPic);
+        rvComm = findViewById(R.id.rvComm);
+        ivPostUser = findViewById(R.id.ivPostUser);
 
         mp = MediaPlayer.create(this,R.raw.grizabella);
         run = new Runnable() {

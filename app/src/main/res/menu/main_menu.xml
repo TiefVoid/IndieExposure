@@ -3,22 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/opcSearch"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Item"
         app:showAsAction="always" />
     <item
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Item"
-        app:showAsAction="always" />
-    <item
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="Item"
-        app:showAsAction="always" />
-    <item
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="Item"
-        app:showAsAction="always" />
-    <item
+        android:id="@+id/opcProfile"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="Item"
         app:showAsAction="always" />
