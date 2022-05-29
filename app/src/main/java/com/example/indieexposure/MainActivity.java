@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnCli
         adapter = new PostAdapter(this);
         rvMain.setAdapter(adapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,true);
         rvMain.setLayoutManager(layoutManager);
 
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnCli
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                adapter.clear();
                 try {
                     for(DataSnapshot one : snapshot.getChildren()){
                         Post p = one.getValue(Post.class);
@@ -91,33 +92,14 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnCli
             }
         });
 
-        /*myRef.addChildEventListener(new ChildEventListener() {
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChanged() {
+                super.onChanged();
 
+                rvMain.smoothScrollToPosition(adapter.getItemCount() - 1);
             }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Post p = snapshot.getValue(Post.class);
-                adapter.add(p);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("The read failed: " + error.getCode());
-            }
-        });*/
+        });
     }
 
     @Override

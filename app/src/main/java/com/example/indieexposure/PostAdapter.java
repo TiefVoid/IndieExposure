@@ -29,6 +29,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
         notifyDataSetChanged();
     }
 
+    public void clear(){
+        data.clear();
+    }
+
     public Post getPost(int position) {
         Post post = data.get(position);
         return post;
@@ -53,7 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
 
         holder.getTvUserShort().setText(post.getUser());
 
-        if(post.getAudio() != null){
+        if(!post.getAudio().equals("")){
             holder.getTvSoundCheck().setText("-Contiene audio");
         }else{
             holder.getTvSoundCheck().setText("");
