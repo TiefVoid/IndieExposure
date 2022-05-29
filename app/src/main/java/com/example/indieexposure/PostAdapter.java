@@ -59,7 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
             holder.getTvSoundCheck().setText("");
         }
 
-        if(post.getImg() != null){
+        if(!post.getImg().equals("")){
             Picasso.get().load( post.getImg() ).into( holder.getIvPhotoShort() );
             holder.getIvPhotoShort().setVisibility( View.VISIBLE );
         }else{
@@ -67,7 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
             holder.getIvPhotoShort().setVisibility( View.GONE );
         }
 
-        if(post.getPfp() != null){
+        if(!post.getPfp().equals("")){
             Picasso.get().load( post.getPfp() ).into( holder.getIvPfp() );
         }
 

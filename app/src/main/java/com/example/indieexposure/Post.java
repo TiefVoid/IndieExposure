@@ -1,5 +1,10 @@
 package com.example.indieexposure;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Post {
     private String user;
     private String desc;
@@ -7,6 +12,19 @@ public class Post {
     private String audio;
     private String pfp;
     private long fechaHora;
+
+    public Post(){
+
+    }
+
+    public Post(String user, String desc, String img, String audio, String pfp, long fechaHora) {
+        this.user = user;
+        this.desc = desc;
+        this.img = img;
+        this.audio = audio;
+        this.pfp = pfp;
+        this.fechaHora = fechaHora;
+    }
 
     public String getPfp() {
         return pfp;
@@ -55,4 +73,18 @@ public class Post {
     public void setFechaHora(long fechaHora) {
         this.fechaHora = fechaHora;
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("pfp", pfp);
+        result.put("user", user);
+        result.put("desc", desc);
+        result.put("img", img);
+        result.put("audio", audio);
+        result.put("fechaHora", fechaHora);
+
+        return result;
+    }
+
 }

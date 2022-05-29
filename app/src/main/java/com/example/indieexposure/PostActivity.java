@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class PostActivity extends AppCompatActivity {
@@ -128,6 +132,19 @@ public class PostActivity extends AppCompatActivity {
                 mp.seekTo(0);
             }
         });
+
+        configUI();
+    }
+
+    private void configUI() {
+        Intent intent = getIntent();
+
+        String p = tvPost.getText().toString();
+        p.replace("User",intent.getStringExtra(MainActivity.POST_USER));
+
+        long fechaHora = intent.getLongExtra(MainActivity.POST_DATE,0);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM, hh:mm a", new Locale( "ES"));
+        p.replace("Date",simpleDateFormat.format( new Timestamp(fechaHora)));
     }
 
     @SuppressLint("DefaultLocale")

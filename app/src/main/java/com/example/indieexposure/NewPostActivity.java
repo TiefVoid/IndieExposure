@@ -1,5 +1,6 @@
 package com.example.indieexposure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,7 +31,7 @@ public class NewPostActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
     private FirebaseStorage storage;
-    private String img="",aud="";
+    private String img="",aud="",user="",pfp="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class NewPostActivity extends AppCompatActivity {
         selAudio = findViewById(R.id.selAudio);
 
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
-        myRef = database.getReference("post");
+        myRef = database.getReference();
         storage = FirebaseStorage.getInstance();
 
         bNewPh.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +69,35 @@ public class NewPostActivity extends AppCompatActivity {
                 newPost();
             }
         });
+
+        configVar();
+    }
+
+    private void configVar() {
+        Intent intent = getIntent();
+
+        if(intent!=null){
+            user = intent.getStringExtra(MainActivity.CURR_USER);
+            pfp = intent.getStringExtra(MainActivity.CURR_PFP);
+        }
     }
 
     private void newPost() {
-        //somehow we gotta drag the user pfp around along with the username
+        String desc = etDesc.getText().toString().trim();
+
+        Post post = new Post();
+
+        post.setAudio(aud);
+        post.setImg(img);
+        post.setDesc(desc);
+        post.setFechaHora(System.currentTimeMillis());
+        post.setUser(user);
+        post.setPfp(pfp);
+
+        //myRef.push().setValue(post);
+        myRef.child("posts").child(user+System.currentTimeMillis()).setValue(post);
+        etDesc.setText("");
+        finish();
     }
 
     private void uploadAudio() {
@@ -76,7 +105,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         intent.setType("audio/*");
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-        startActivityForResult(intent, ACCION_SELECCION_IMAGEN);
+        startActivityForResult(intent, ACCION_SELECCION_AUDIO);
     }
 
     private void uploadPhoto() {
@@ -84,7 +113,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-        startActivityForResult(intent, ACCION_SELECCION_AUDIO);
+        startActivityForResult(intent, ACCION_SELECCION_IMAGEN);
     }
 
     @Override
