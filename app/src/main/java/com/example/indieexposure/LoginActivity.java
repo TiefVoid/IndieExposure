@@ -1,6 +1,7 @@
 package com.example.indieexposure;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etpassword;
-    private TextView tvRegistro;
     private Button bLogin, bregistro;
     private FirebaseAuth mAuth;
 
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         bregistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegistroActivity.class));
+                goToUrl("https://proyecto-final-6dd98.web.app");
             }
         });
 
@@ -84,6 +84,12 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void goToUrl (String url) {
+        Uri uriUrl = Uri.parse(url);
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchBrowser);
     }
 
 
