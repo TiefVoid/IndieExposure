@@ -1,9 +1,7 @@
 package com.example.indieexposure;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,28 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String LOGGED_USER = "user";
-    private static final String APP_SHARED_PREFS = "preferences";
-    public static final String LOGGED_PFP = "pfp";
     public static final String LOGGED_MAIL = "mail";
     private EditText etUsername, etpassword;
-    private TextView tvRegistro;
     private Button bLogin, bregistro;
     private FirebaseAuth mAuth;
-    FirebaseDatabase database;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         bLogin = findViewById(R.id.bLogin);
         bregistro = findViewById(R.id.bregistro);
 
-        database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         bregistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegistroActivity.class));
+                goToUrl("https://proyecto-final-6dd98.web.app");
             }
         });
     }
@@ -110,6 +96,12 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void goToUrl (String url) {
+        Uri uriUrl = Uri.parse(url);
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchBrowser);
     }
 
 

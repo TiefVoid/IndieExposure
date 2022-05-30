@@ -1,6 +1,8 @@
 package com.example.indieexposure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -9,12 +11,18 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.sql.Timestamp;
@@ -31,6 +39,9 @@ public class PostActivity extends AppCompatActivity {
     MediaPlayer mp;
     Handler handel = new Handler();
     Runnable run;
+    private CommentAdapter adapter;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +58,42 @@ public class PostActivity extends AppCompatActivity {
         tvPost = findViewById(R.id.tvPost);
         tvDesc = findViewById(R.id.tvDesc);
         ivPic = findViewById(R.id.ivPic);
+
+        //Recicly View Comment
         rvComm = findViewById(R.id.rvComm);
+        //Se pone el adapter
+        adapter = new CommentAdapter(this);
+        rvComm.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,true);
+        rvComm.setLayoutManager(layoutManager);
+        //Firebase
+        database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
+        myRef = database.getReference("comment");
+        //Fin de lo de Recycle
+
         ivPostUser = findViewById(R.id.ivPostUser);
         playBarLayout = findViewById(R.id.playBarLayout);
         buttonsLayout = findViewById(R.id.buttonsLayout);
 
-        //Placeholder so it doesn't break
-        //mp = MediaPlayer.create(this,R.raw.macavity);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                adapter.clear();
+                try {
+                    for(DataSnapshot one : snapshot.getChildren()){
+                        Comment p = one.getValue(Comment.class);
+                        adapter.add(p);
+                    }
+                }catch (Error error){
+                    Log.i("TiefVoid", error.getLocalizedMessage());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: " + error.getCode());
+            }
+        });
 
         configUI();
     }
