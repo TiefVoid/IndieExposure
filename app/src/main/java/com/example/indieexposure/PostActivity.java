@@ -52,6 +52,68 @@ public class PostActivity extends AppCompatActivity {
         playBarLayout = findViewById(R.id.playBarLayout);
         buttonsLayout = findViewById(R.id.buttonsLayout);
 
+        //Placeholder so it doesn't break
+        //mp = MediaPlayer.create(this,R.raw.macavity);
+
+        configUI();
+    }
+
+    private void configUI() {
+        Intent intent = getIntent();
+
+        String p = tvPost.getText().toString();
+        String postUser = intent.getStringExtra(MainActivity.POST_USER);
+        p = p.replace("User",postUser);
+
+        long fechaHora = intent.getLongExtra(MainActivity.POST_DATE,0);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM, hh:mm a", new Locale( "ES"));
+        p = p.replace("Date",simpleDateFormat.format( new Timestamp(fechaHora)));
+
+        tvPost.setText(p);
+
+        String desc = intent.getStringExtra(MainActivity.POST_DESC);
+        tvDesc.setText(desc);
+
+        String img = intent.getStringExtra(MainActivity.POST_IMG);
+        if(!img.equals("")){
+            Picasso.get().load( img ).into( ivPic );
+            ivPic.setVisibility( View.VISIBLE );
+        }else{
+            ivPic.setImageResource(0);
+            ivPic.setVisibility( View.GONE );
+        }
+
+        String pfp = intent.getStringExtra(MainActivity.POST_PFP);
+        if(!pfp.equals("")){
+            Picasso.get().load( pfp ).into( ivPostUser );
+        }
+
+        String audio = intent.getStringExtra(MainActivity.POST_AUDIO);
+        if(!audio.equals("")){
+            playBarLayout.setVisibility(View.VISIBLE);
+            buttonsLayout.setVisibility(View.VISIBLE);
+            configAudio(audio);
+        }else{
+            playBarLayout.setVisibility(View.GONE);
+            buttonsLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void configAudio(String audio) {
+        Uri uri = Uri.parse(audio);
+        mp = MediaPlayer.create(this,uri);
+        run = new Runnable() {
+            @Override
+            public void run() {
+                sBar.setProgress(mp.getCurrentPosition());
+                handel.postDelayed(this,500);
+            }
+        };
+
+        int dur = mp.getDuration();
+        String sDur = convertFormat(dur);
+        pDur.setText(sDur);
+
         btPl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,65 +188,6 @@ public class PostActivity extends AppCompatActivity {
                 mp.seekTo(0);
             }
         });
-
-        configUI();
-    }
-
-    private void configUI() {
-        Intent intent = getIntent();
-
-        String p = tvPost.getText().toString();
-        String postUser = intent.getStringExtra(MainActivity.POST_USER);
-        p = p.replace("User",postUser);
-
-        long fechaHora = intent.getLongExtra(MainActivity.POST_DATE,0);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM, hh:mm a", new Locale( "ES"));
-        p = p.replace("Date",simpleDateFormat.format( new Timestamp(fechaHora)));
-
-        tvPost.setText(p);
-
-        String desc = intent.getStringExtra(MainActivity.POST_DESC);
-        tvDesc.setText(desc);
-
-        String img = intent.getStringExtra(MainActivity.POST_IMG);
-        if(!img.equals("")){
-            Picasso.get().load( img ).into( ivPic );
-            ivPic.setVisibility( View.VISIBLE );
-        }else{
-            ivPic.setImageResource(0);
-            ivPic.setVisibility( View.GONE );
-        }
-
-        String pfp = intent.getStringExtra(MainActivity.POST_PFP);
-        if(!pfp.equals("")){
-            Picasso.get().load( pfp ).into( ivPostUser );
-        }
-
-        String audio = intent.getStringExtra(MainActivity.POST_AUDIO);
-        if(!audio.equals("")){
-            playBarLayout.setVisibility(View.VISIBLE);
-            buttonsLayout.setVisibility(View.VISIBLE);
-            configAudio(audio);
-        }else{
-            playBarLayout.setVisibility(View.GONE);
-            buttonsLayout.setVisibility(View.GONE);
-        }
-    }
-
-    private void configAudio(String audio) {
-        Uri uri = Uri.parse(audio);
-        mp = MediaPlayer.create(this,uri);
-        run = new Runnable() {
-            @Override
-            public void run() {
-                sBar.setProgress(mp.getCurrentPosition());
-                handel.postDelayed(this,500);
-            }
-        };
-
-        int dur = mp.getDuration();
-        String sDur = convertFormat(dur);
-        pDur.setText(sDur);
     }
 
     @SuppressLint("DefaultLocale")
