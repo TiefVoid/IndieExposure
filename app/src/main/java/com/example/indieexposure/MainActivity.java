@@ -27,7 +27,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.OnClickListener{
+public class MainActivity extends AppCompatActivity implements PostAdapter.OnPostClickListener{
     public static final String POST_USER = "User";
     public static final String POST_AUDIO = "Audio";
     public static final String POST_DESC = "Desc";
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnCli
     public static final String POST_PFP = "Pfp";
     public static final String CURR_USER = "Me";
     public static final String CURR_PFP = "welp";
-    private String logged_user = "Rod",logged_pfp = "";
+    public String logged_user = "Rod",logged_pfp = "";
     FirebaseDatabase database;
     DatabaseReference myRef;
     private FloatingActionButton fabNewPost;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnCli
         fabNewPost = findViewById(R.id.fabNewPost);
         rvMain = findViewById(R.id.rvMain);
 
-        adapter = new PostAdapter(this);
+        adapter = new PostAdapter(this,this);
         rvMain.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,true);
@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnCli
                 rvMain.smoothScrollToPosition(adapter.getItemCount() - 1);
             }
         });
+
+        if(logged_user.equals("")){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override

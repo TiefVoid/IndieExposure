@@ -5,14 +5,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PostHolder extends RecyclerView.ViewHolder {
     private ImageView ivPfp,ivPhotoShort;
     private TextView tvUserShort, tvSoundCheck, tvDescShort, tvPostDate;
+    private ConstraintLayout postContainer;
 
-    public PostHolder(@NonNull View itemView) {
+    public PostHolder(@NonNull View itemView, PostAdapter.OnPostClickListener interfaz) {
         super(itemView);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = getAdapterPosition();
+
+                interfaz.onClick(position);
+            }
+        });
 
         ivPfp = itemView.findViewById(R.id.ivPfp);
         ivPhotoShort = itemView.findViewById(R.id.ivPhotoShort);
@@ -20,6 +31,15 @@ public class PostHolder extends RecyclerView.ViewHolder {
         tvSoundCheck = itemView.findViewById(R.id.tvSoundCheck);
         tvDescShort = itemView.findViewById(R.id.tvDescShort);
         tvPostDate = itemView.findViewById(R.id.tvPostDate);
+        postContainer = itemView.findViewById(R.id.postContainer);
+    }
+
+    public ConstraintLayout getPostContainer() {
+        return postContainer;
+    }
+
+    public void setPostContainer(ConstraintLayout postContainer) {
+        this.postContainer = postContainer;
     }
 
     public ImageView getIvPfp() {

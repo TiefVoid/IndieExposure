@@ -1,6 +1,7 @@
 package com.example.indieexposure;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostHolder>{
     private ArrayList<Post> data;
     private Context context;
+    private OnPostClickListener interfaz;
 
-    public PostAdapter(Context context){
+    /*View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            PostHolder holder = (PostHolder) view.getTag();
+            int position = holder.getAdapterPosition();
+
+        }
+    };*/
+
+    public PostAdapter(Context context, OnPostClickListener interfaz){
         this.context = context;
+        this.interfaz = interfaz;
         data = new ArrayList<>();
     }
 
@@ -42,7 +54,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
     @Override
     public PostHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.post_simplified, parent, false);
-        return new PostHolder(view);
+        return new PostHolder(view,interfaz);
     }
 
     @Override
@@ -75,6 +87,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
             Picasso.get().load( post.getPfp() ).into( holder.getIvPfp() );
         }
 
+        //holder.getPostContainer().setOnClickListener(mClickListener);
+        //holder.getPostContainer().setTag(holder);
     }
 
     @Override
@@ -82,7 +96,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder> {
         return data.size();
     }
 
-    public interface OnClickListener{
+
+    public interface OnPostClickListener{
         void onClick(int position);
     }
 }
