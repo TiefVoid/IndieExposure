@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -29,8 +30,9 @@ public class NewComment extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
+    DatabaseReference userRef;
 
-    private String user="",pfp="",post="";
+    private String user="",pfp="",post="",key="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class NewComment extends AppCompatActivity {
         //Database config
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
         myRef = database.getReference();
+        userRef = database.getReference("users");
 
         bComentar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,11 +60,26 @@ public class NewComment extends AppCompatActivity {
 
     private void configVar() {
         Intent intent = getIntent();
-        if(intent!=null){
-            user = intent.getStringExtra(PostActivity.CURR_USER);
-            pfp = intent.getStringExtra(PostActivity.CURR_PFP);
-            post = intent.getStringExtra(PostActivity.POST_USER) + String.valueOf(intent.getLongExtra(PostActivity.POST_TIME,0));
-        }
+        key = intent.getStringExtra(PostActivity.CURR_KEY);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot one : snapshot.getChildren()){
+                    User use = one.getValue(User.class);
+                    if(one.getKey().equals(key)){
+                        pfp = use.getProfile_picture();
+                        user = use.getUser();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        post = intent.getStringExtra(PostActivity.POST_USER) + String.valueOf(intent.getLongExtra(PostActivity.POST_TIME,0));
     }
 
     private void newComment() {
@@ -74,6 +92,7 @@ public class NewComment extends AppCompatActivity {
         ahh.setUser(user);
         ahh.setPfp(pfp);
         ahh.setPost(post);
+        ahh.setUser_key(key);
 
         myRef.child("comment").child(user+System.currentTimeMillis()).setValue(ahh);
         etDescComment.setText("");

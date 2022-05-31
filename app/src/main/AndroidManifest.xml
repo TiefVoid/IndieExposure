@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.indieexposure">
+    package="com.example.indieexposure" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,12 +10,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IndieExposure">
+        android:theme="@style/Theme.IndieExposure" >
+        <activity
+            android:name=".ProfileFromFollowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FollowersActivity"
+            android:exported="false" />
         <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ProfileFromPostActivity"
             android:exported="false" />
         <activity
             android:name=".NewComment"
@@ -37,7 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

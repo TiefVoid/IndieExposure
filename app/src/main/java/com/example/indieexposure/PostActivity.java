@@ -34,8 +34,10 @@ import java.util.concurrent.TimeUnit;
 public class PostActivity extends AppCompatActivity {
     public static final String CURR_USER = "Yo";
     public static final String CURR_PFP = "yop";
+    public static final String CURR_KEY = "llave";
     public static final String POST_TIME = "ahorita";
     public static final String POST_USER = "este vato";
+    public static final String POST_USER_KEY = "clave";
     private TextView pPos,pDur,tvPost,tvDesc;
     private SeekBar sBar;
     private ImageView btR, btPl, btPs, btF, ivPic, ivPostUser;
@@ -48,7 +50,7 @@ public class PostActivity extends AppCompatActivity {
     private CommentAdapter adapter;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private String logged_user = "", logged_pfp = "", post_user = "";
+    private String logged_user = "", logged_pfp = "", post_user = "", logged_key = "",post_user_key="";
     private long time = 0;
 
     @Override
@@ -115,8 +117,21 @@ public class PostActivity extends AppCompatActivity {
 
                 intent.putExtra(CURR_USER,logged_user);
                 intent.putExtra(CURR_PFP,logged_pfp);
+                intent.putExtra(CURR_KEY,logged_key);
                 intent.putExtra(POST_TIME,time);
                 intent.putExtra(POST_USER,post_user);
+
+                startActivity(intent);
+            }
+        });
+
+        ivPostUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostActivity.this, ProfileFromPostActivity.class);
+
+                intent.putExtra(CURR_KEY,logged_key);
+                intent.putExtra(POST_USER_KEY,post_user_key);
 
                 startActivity(intent);
             }
@@ -125,11 +140,19 @@ public class PostActivity extends AppCompatActivity {
         configUI();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void configUI() {
         Intent intent = getIntent();
 
         logged_user = intent.getStringExtra(MainActivity.CURR_USER);
         logged_pfp = intent.getStringExtra(MainActivity.CURR_PFP);
+        logged_key = intent.getStringExtra(MainActivity.CURR_KEY);
+        post_user_key = intent.getStringExtra(MainActivity.POST_USER_KEY);
 
         String p = tvPost.getText().toString();
         String postUser = intent.getStringExtra(MainActivity.POST_USER);

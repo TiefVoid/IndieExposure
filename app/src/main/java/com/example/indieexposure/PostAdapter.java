@@ -21,15 +21,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder>{
     private Context context;
     private OnPostClickListener interfaz;
 
-    /*View.OnClickListener mClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            PostHolder holder = (PostHolder) view.getTag();
-            int position = holder.getAdapterPosition();
-
-        }
-    };*/
-
     public PostAdapter(Context context, OnPostClickListener interfaz){
         this.context = context;
         this.interfaz = interfaz;
@@ -86,9 +77,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostHolder>{
         if(!post.getPfp().equals("")){
             Picasso.get().load( post.getPfp() ).into( holder.getIvPfp() );
         }
-
-        //holder.getPostContainer().setOnClickListener(mClickListener);
-        //holder.getPostContainer().setTag(holder);
     }
 
     @Override

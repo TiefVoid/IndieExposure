@@ -19,9 +19,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class NewPostActivity extends AppCompatActivity {
     public static final int ACCION_SELECCION_IMAGEN = 42;
@@ -31,8 +33,9 @@ public class NewPostActivity extends AppCompatActivity {
     private TextView selPhoto, selAudio;
     FirebaseDatabase database;
     DatabaseReference myRef;
+    DatabaseReference userRef;
     private FirebaseStorage storage;
-    private String img="",aud="",user="",pfp="";
+    private String img="",aud="",user="",pfp="",key="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
         myRef = database.getReference();
+        userRef = database.getReference("users");
         storage = FirebaseStorage.getInstance();
 
         bNewPh.setOnClickListener(new View.OnClickListener() {
@@ -76,11 +80,25 @@ public class NewPostActivity extends AppCompatActivity {
 
     private void configVar() {
         Intent intent = getIntent();
+        key = intent.getStringExtra(MainActivity.CURR_KEY);
 
-        if(intent!=null){
-            user = intent.getStringExtra(MainActivity.CURR_USER);
-            pfp = intent.getStringExtra(MainActivity.CURR_PFP);
-        }
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot one : snapshot.getChildren()){
+                    User use = one.getValue(User.class);
+                    if(one.getKey().equals(key)){
+                        pfp = use.getProfile_picture();
+                        user = use.getUser();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void newPost() {
@@ -94,17 +112,11 @@ public class NewPostActivity extends AppCompatActivity {
         post.setFechaHora(System.currentTimeMillis());
         post.setUser(user);
         post.setPfp(pfp);
+        post.setUser_key(key);
 
         myRef.child("posts").child(user+System.currentTimeMillis()).setValue(post);
         etDesc.setText("");
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                finish();
-            }
-        }, 5000);
+        finish();
     }
 
     private void uploadAudio() {

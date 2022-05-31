@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
-    tools:context=".ProfileActivity">
+    tools:context=".ProfileFromPostActivity">
 
     <ImageView
         android:id="@+id/ivTheirPfp"
@@ -56,16 +56,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTheirPseud" />
-
-    <ImageView
-        android:id="@+id/ivTheirFollowers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvTheirBio"
-        app:layout_constraintEnd_toStartOf="@+id/tvTheirUser"
-        app:srcCompat="@drawable/ic_followers" />
 
     <ImageView
         android:id="@+id/ivFollow"

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnPos
     public static final String POST_DATE = "Date";
     public static final String POST_IMG = "Img";
     public static final String POST_PFP = "Pfp";
+    public static final String POST_USER_KEY = "user_key";
     public static final String CURR_USER = "Me";
     public static final String CURR_PFP = "welp";
     public static final String CURR_KEY = "key";
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnPos
 
                 intent.putExtra(CURR_USER,logged_user);
                 intent.putExtra(CURR_PFP,logged_pfp);
+                intent.putExtra(CURR_KEY,logged_key);
 
                 startActivity(intent);
             }
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnPos
                                     User use = one.getValue(User.class);
                                     use.setKey(one.getKey());
                                     if(use.getEmail().equals(logged_mail)){
-                                        Log.i("key",use.getKey());
+                                        //Log.i("key",use.getKey());
                                         logged_pfp = use.getProfile_picture();
                                         logged_user = use.getUser();
                                         logged_key = use.getKey();
@@ -185,12 +187,14 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnPos
 
         intent.putExtra(CURR_USER,logged_user);
         intent.putExtra(CURR_PFP,logged_pfp);
+        intent.putExtra(CURR_KEY,logged_key);
         intent.putExtra(POST_USER,post.getUser());
         intent.putExtra(POST_AUDIO,post.getAudio());
         intent.putExtra(POST_DESC,post.getDesc());
         intent.putExtra(POST_DATE,post.getFechaHora());
         intent.putExtra(POST_IMG,post.getImg());
         intent.putExtra(POST_PFP,post.getPfp());
+        intent.putExtra(POST_USER_KEY,post.getUser_key());
 
         startActivity(intent);
     }

@@ -70,19 +70,12 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
-        myRef.child(key).child("pseud").setValue(etPseud.getText());
-        myRef.child(key).child("bio").setValue(etBio.getText());
+        myRef.child(key).child("pseud").setValue(etPseud.getText().toString().trim());
+        myRef.child(key).child("bio").setValue(etBio.getText().toString().trim());
         if(!new_pfp.equals("")){
             myRef.child(key).child("profile_picture").setValue(new_pfp);
         }
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                finish();
-            }
-        }, 5000);
+        finish();
     }
 
     private void configUI() {

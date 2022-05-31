@@ -10,18 +10,28 @@ public class Comment {
     private String desc2;
     private String pfp2;
     private String post;
+    private String user_key;
     private long fechaHora2;
 
     public Comment() {
 
     }
 
-    public Comment(String user2, String desc2, String pfp2, String post, long fechaHora2) {
+    public Comment(String user2, String desc2, String pfp2, String post, long fechaHora2, String user_key) {
         this.user2 = user2;
         this.desc2 = desc2;
         this.pfp2 = pfp2;
         this.post = post;
+        this.user_key = user_key;
         this.fechaHora2 = fechaHora2;
+    }
+
+    public String getUser_key() {
+        return user_key;
+    }
+
+    public void setUser_key(String user_key) {
+        this.user_key = user_key;
     }
 
     public String getPost() {

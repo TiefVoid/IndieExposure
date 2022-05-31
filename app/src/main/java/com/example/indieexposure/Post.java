@@ -11,19 +11,29 @@ public class Post {
     private String img;
     private String audio;
     private String pfp;
+    private String user_key;
     private long fechaHora;
 
     public Post(){
 
     }
 
-    public Post(String user, String desc, String img, String audio, String pfp, long fechaHora) {
+    public Post(String user, String desc, String img, String audio, String pfp, long fechaHora, String user_key) {
         this.user = user;
         this.desc = desc;
         this.img = img;
         this.audio = audio;
         this.pfp = pfp;
         this.fechaHora = fechaHora;
+        this.user_key = user_key;
+    }
+
+    public String getUser_key() {
+        return user_key;
+    }
+
+    public void setUser_key(String user_key) {
+        this.user_key = user_key;
     }
 
     public String getPfp() {

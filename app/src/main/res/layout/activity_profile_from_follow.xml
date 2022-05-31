@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
-    tools:context=".MyProfileActivity">
+    tools:context=".ProfileFromFollowActivity">
 
     <ImageView
-        android:id="@+id/ivMyPfp"
+        android:id="@+id/ivTheirPfp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -25,7 +25,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvMyUser"
+        android:id="@+id/tvTheirUser2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
@@ -33,20 +33,20 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivMyPfp" />
+        app:layout_constraintTop_toBottomOf="@+id/ivTheirPfp2" />
 
     <TextView
-        android:id="@+id/tvMyPseud"
+        android:id="@+id/tvTheirPseud2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Short description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMyUser" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTheirUser2" />
 
     <TextView
-        android:id="@+id/tvMyBio"
+        android:id="@+id/tvTheirBio2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -55,25 +55,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMyPseud" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTheirPseud2" />
 
     <ImageView
-        android:id="@+id/ivMyFollowers"
+        android:id="@+id/ivFollow2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12dp"
         android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvMyBio"
-        app:layout_constraintEnd_toStartOf="@+id/tvMyUser"
-        app:srcCompat="@drawable/ic_followers" />
+        app:layout_constraintBottom_toTopOf="@+id/tvTheirBio2"
+        app:layout_constraintStart_toEndOf="@+id/tvTheirUser2"
+        app:srcCompat="@drawable/ic_follow" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMyPosts"
+        android:id="@+id/rvTheirPosts2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMyBio" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tvTheirBio2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
