@@ -84,8 +84,11 @@ public class MyProfileActivity extends AppCompatActivity implements PostAdapter.
                 try {
                     for(DataSnapshot one : snapshot.getChildren()){
                         Post p = one.getValue(Post.class);
-                        if(p.getUser_key().equals(key)){
-                            adapter.add(p);
+                        String x = p.getUser_key();
+                        if(x!=null){
+                            if(p.getUser_key().equals(key)){
+                                adapter.add(p);
+                            }
                         }
                     }
                 }catch (Error error){
