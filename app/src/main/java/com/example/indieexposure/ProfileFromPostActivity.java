@@ -116,8 +116,9 @@ public class ProfileFromPostActivity extends AppCompatActivity implements PostAd
     }
 
     private void followUser() {
-        myRef.child("users").child(logged_key).child("following").push().setValue(key);
-        myRef.child("users").child(key).child("followers").push().setValue(logged_key);
+        myRef.child("users").child(logged_key).child("following").child(String.valueOf(key)).setValue(key);
+        myRef.child("users").child(key).child("followers").child(String.valueOf(logged_key)).setValue(logged_key);
+        recreate();
     }
 
     @Override
@@ -150,6 +151,20 @@ public class ProfileFromPostActivity extends AppCompatActivity implements PostAd
                         bio = use.getBio();
                         tvTheirBio.setText(bio);
                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        userRef.child(logged_key).child("following").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    ivFollow.setVisibility(View.GONE);
                 }
             }
 

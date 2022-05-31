@@ -50,10 +50,24 @@ public class FollowersActivity extends AppCompatActivity implements ProfileAdapt
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot one : snapshot.getChildren()){
-                    User use = one.getValue(User.class);
-                    if(one.getKey().equals(logged_key)){
-                        adapter.add(use);
-                    }
+                    key = one.getKey();
+                    userRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot two : snapshot.getChildren()){
+                                User use = two.getValue(User.class);
+                                String hold = two.getKey();
+                                if(hold.equals(key)){
+                                    adapter.add(use);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
