@@ -2,10 +2,12 @@ package com.example.indieexposure;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,8 @@ public class FollowersActivity extends AppCompatActivity implements ProfileAdapt
 
         adapter = new ProfileAdapter(this,this);
         rvFollowers.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        rvFollowers.setLayoutManager(layoutManager);
 
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
         myRef = database.getReference();
@@ -43,31 +47,34 @@ public class FollowersActivity extends AppCompatActivity implements ProfileAdapt
 
     private void configUI() {
         Intent intent = getIntent();
-
         logged_key = intent.getStringExtra(MyProfileActivity.CURR_KEY);
-
-        userRef.child("following").addValueEventListener(new ValueEventListener() {
+        userRef.child(logged_key).child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot one : snapshot.getChildren()){
-                    key = one.getKey();
-                    userRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot two : snapshot.getChildren()){
-                                User use = two.getValue(User.class);
-                                String hold = two.getKey();
-                                if(hold.equals(key)){
-                                    adapter.add(use);
+                try {
+                    adapter.clear();
+                    for (DataSnapshot one : snapshot.getChildren()) {
+                        key = one.getKey();
+                        userRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot two : snapshot.getChildren()) {
+                                    User use = two.getValue(User.class);
+                                    String hold = two.getKey();
+                                    if (hold.equals(key)) {
+                                        adapter.add(use);
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+                } catch (Error error) {
+                    Log.i("TiefVoid", error.getLocalizedMessage());
                 }
             }
 
