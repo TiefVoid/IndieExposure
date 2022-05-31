@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -94,10 +95,16 @@ public class NewPostActivity extends AppCompatActivity {
         post.setUser(user);
         post.setPfp(pfp);
 
-        //myRef.push().setValue(post);
         myRef.child("posts").child(user+System.currentTimeMillis()).setValue(post);
         etDesc.setText("");
-        finish();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                finish();
+            }
+        }, 5000);
     }
 
     private void uploadAudio() {

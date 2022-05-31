@@ -30,7 +30,7 @@ public class NewComment extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
 
-    private String user="",pfp="";
+    private String user="",pfp="",post="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class NewComment extends AppCompatActivity {
         //Button
         bComentar = findViewById(R.id.bComentar);
         //Edit Text
-       etDescComment = findViewById(R.id.etDescComment);
+        etDescComment = findViewById(R.id.etDescComment);
 
         //Database config
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
@@ -58,9 +58,9 @@ public class NewComment extends AppCompatActivity {
     private void configVar() {
         Intent intent = getIntent();
         if(intent!=null){
-            user = intent.getStringExtra(MainActivity.CURR_USER);
-            pfp = intent.getStringExtra(MainActivity.CURR_PFP);
-
+            user = intent.getStringExtra(PostActivity.CURR_USER);
+            pfp = intent.getStringExtra(PostActivity.CURR_PFP);
+            post = intent.getStringExtra(PostActivity.POST_USER) + String.valueOf(intent.getLongExtra(PostActivity.POST_TIME,0));
         }
     }
 
@@ -73,6 +73,7 @@ public class NewComment extends AppCompatActivity {
         ahh.setFechaHora(System.currentTimeMillis());
         ahh.setUser(user);
         ahh.setPfp(pfp);
+        ahh.setPost(post);
 
         myRef.child("comment").child(user+System.currentTimeMillis()).setValue(ahh);
         etDescComment.setText("");

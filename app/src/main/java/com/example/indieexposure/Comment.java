@@ -9,9 +9,28 @@ public class Comment {
     private String user2;
     private String desc2;
     private String pfp2;
+    private String post;
     private long fechaHora2;
 
+    public Comment() {
 
+    }
+
+    public Comment(String user2, String desc2, String pfp2, String post, long fechaHora2) {
+        this.user2 = user2;
+        this.desc2 = desc2;
+        this.pfp2 = pfp2;
+        this.post = post;
+        this.fechaHora2 = fechaHora2;
+    }
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
 
     public String getPfp() {
         return pfp2;
@@ -52,6 +71,7 @@ public class Comment {
         result.put("user", user2);
         result.put("desc", desc2);
         result.put("fechaHora", fechaHora2);
+        result.put("post", post);
 
         return result;
     }

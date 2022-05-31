@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,9 +32,14 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class PostActivity extends AppCompatActivity {
+    public static final String CURR_USER = "Yo";
+    public static final String CURR_PFP = "yop";
+    public static final String POST_TIME = "ahorita";
+    public static final String POST_USER = "este vato";
     private TextView pPos,pDur,tvPost,tvDesc;
     private SeekBar sBar;
     private ImageView btR, btPl, btPs, btF, ivPic, ivPostUser;
+    private FloatingActionButton fabNewComment;
     private RecyclerView rvComm;
     private LinearLayout playBarLayout,buttonsLayout;
     MediaPlayer mp;
@@ -42,6 +48,8 @@ public class PostActivity extends AppCompatActivity {
     private CommentAdapter adapter;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private String logged_user = "", logged_pfp = "", post_user = "";
+    private long time = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +66,14 @@ public class PostActivity extends AppCompatActivity {
         tvPost = findViewById(R.id.tvPost);
         tvDesc = findViewById(R.id.tvDesc);
         ivPic = findViewById(R.id.ivPic);
+        fabNewComment = findViewById(R.id.fabNewComment);
 
         //Recicly View Comment
         rvComm = findViewById(R.id.rvComm);
         //Se pone el adapter
         adapter = new CommentAdapter(this);
         rvComm.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvComm.setLayoutManager(layoutManager);
         //Firebase
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
@@ -82,7 +91,11 @@ public class PostActivity extends AppCompatActivity {
                 try {
                     for(DataSnapshot one : snapshot.getChildren()){
                         Comment p = one.getValue(Comment.class);
-                        adapter.add(p);
+                        String post_id = post_user + String.valueOf(time);
+                        String post = p.getPost();
+                        if(post.equals(post_id)){
+                            adapter.add(p);
+                        }
                     }
                 }catch (Error error){
                     Log.i("TiefVoid", error.getLocalizedMessage());
@@ -95,17 +108,36 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        fabNewComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostActivity.this, NewComment.class);
+
+                intent.putExtra(CURR_USER,logged_user);
+                intent.putExtra(CURR_PFP,logged_pfp);
+                intent.putExtra(POST_TIME,time);
+                intent.putExtra(POST_USER,post_user);
+
+                startActivity(intent);
+            }
+        });
+
         configUI();
     }
 
     private void configUI() {
         Intent intent = getIntent();
 
+        logged_user = intent.getStringExtra(MainActivity.CURR_USER);
+        logged_pfp = intent.getStringExtra(MainActivity.CURR_PFP);
+
         String p = tvPost.getText().toString();
         String postUser = intent.getStringExtra(MainActivity.POST_USER);
+        post_user = postUser;
         p = p.replace("User",postUser);
 
         long fechaHora = intent.getLongExtra(MainActivity.POST_DATE,0);
+        time = fechaHora;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM, hh:mm a", new Locale( "ES"));
         p = p.replace("Date",simpleDateFormat.format( new Timestamp(fechaHora)));
 

@@ -10,17 +10,38 @@ public class User {
     String profile_picture;
     String email;
     String key;
+    String bio;
+    String pseud;
     long last_login;
 
     public User(){
 
     }
 
-    public User(String user, String profile_picture, String email, long last_login) {
+    public User(String user, String profile_picture, String email, String key, String bio, String pseud, long last_login) {
         this.user = user;
         this.profile_picture = profile_picture;
         this.email = email;
+        this.key = key;
+        this.bio = bio;
+        this.pseud = pseud;
         this.last_login = last_login;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getPseud() {
+        return pseud;
+    }
+
+    public void setPseud(String pseud) {
+        this.pseud = pseud;
     }
 
     public String getUser() {
