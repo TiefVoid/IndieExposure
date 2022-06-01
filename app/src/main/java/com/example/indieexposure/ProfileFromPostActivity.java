@@ -79,10 +79,12 @@ public class ProfileFromPostActivity extends AppCompatActivity implements PostAd
                 try {
                     for(DataSnapshot one : snapshot.getChildren()){
                         Post p = one.getValue(Post.class);
-                        String x = p.getUser_key();
-                        if(x!=null){
-                            if(p.getUser_key().equals(key)){
-                                adapter.add(p);
+                        if(p != null){
+                            String x = p.getUser_key();
+                            if(x!=null){
+                                if(p.getUser_key().equals(key)){
+                                    adapter.add(p);
+                                }
                             }
                         }
                     }

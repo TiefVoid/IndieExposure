@@ -51,7 +51,8 @@ public class ProfileFromFollowActivity extends AppCompatActivity implements Post
         tvTheirBio = findViewById(R.id.tvTheirBio2);
         tvTheirPseud = findViewById(R.id.tvTheirPseud2);
         tvTheirUser = findViewById(R.id.tvTheirUser2);
-        rvTheirPosts = findViewById(R.id.rvTheirPosts);
+        ivFollow = findViewById(R.id.ivFollow2);
+        rvTheirPosts = findViewById(R.id.rvTheirPosts2);
 
         adapter = new PostAdapter(this,this);
         rvTheirPosts.setAdapter(adapter);
@@ -78,10 +79,12 @@ public class ProfileFromFollowActivity extends AppCompatActivity implements Post
                 try {
                     for(DataSnapshot one : snapshot.getChildren()){
                         Post p = one.getValue(Post.class);
-                        String x = p.getUser_key();
-                        if(x!=null){
-                            if(p.getUser_key().equals(key)){
-                                adapter.add(p);
+                        if(p != null){
+                            String x = p.getUser_key();
+                            if(x!=null){
+                                if(p.getUser_key().equals(key)){
+                                    adapter.add(p);
+                                }
                             }
                         }
                     }

@@ -39,7 +39,7 @@ public class FollowersActivity extends AppCompatActivity implements ProfileAdapt
         rvFollowers.setLayoutManager(layoutManager);
 
         database = FirebaseDatabase.getInstance("https://proyecto-final-6dd98-default-rtdb.firebaseio.com/");
-        myRef = database.getReference();
+        myRef = database.getReference("users");
         userRef = database.getReference("users");
 
         configUI();
@@ -48,42 +48,44 @@ public class FollowersActivity extends AppCompatActivity implements ProfileAdapt
     private void configUI() {
         Intent intent = getIntent();
         logged_key = intent.getStringExtra(MyProfileActivity.CURR_KEY);
-        userRef.child(logged_key).child("following").addValueEventListener(new ValueEventListener() {
+        key = "";
+        myRef.child(logged_key).child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    adapter.clear();
-                    for (DataSnapshot one : snapshot.getChildren()) {
-                        key = one.getKey();
-                        userRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot two : snapshot.getChildren()) {
-                                    User use = two.getValue(User.class);
-                                    String hold = two.getKey();
-                                    if (hold.equals(key)) {
-                                        adapter.add(use);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-                } catch (Error error) {
-                    Log.i("TiefVoid", error.getLocalizedMessage());
+                adapter.clear();
+                for (DataSnapshot one : snapshot.getChildren()) {
+                    key = one.getKey();
+                    findUser(key);
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error1) {
 
             }
         });
     }
+
+    private void findUser(String key) {
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                for (DataSnapshot two : snapshot2.getChildren()) {
+                    User use = two.getValue(User.class);
+                    String hold = two.getKey();
+                    if (hold.equals(key)) {
+                        use.setKey(hold);
+                        adapter.add(use);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error2) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onClick(int position) {
